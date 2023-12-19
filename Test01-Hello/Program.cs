@@ -1,5 +1,6 @@
 ﻿using System;
 using static System.Console;
+using static System.Math;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -37,8 +38,15 @@ namespace Test01_Hello
         {
             int d1 = p1.x - p2.x;
             int d2 = p1.y - p2.y;
-           // return Math.Sqrt(d1*d1 + d2 * d2);
-            return d1 * d2;
+            //return Math.Sqrt(d1*d1 + d2 * d2);
+            return Sqrt(d1*d1 + d2 * d2);
+        }
+        public static double operator *(Point p1, Point p2)
+        {
+            int d1 = p1.x - p2.x;
+            int d2 = p1.y - p2.y;
+            return Math.Abs(d1 * d2);
+            
         }
     }
     internal class Program
@@ -65,17 +73,17 @@ namespace Test01_Hello
         {
             //Point p = new Point(10, 20);
             //Point p1 = new Point(30, 40);
-            //WriteLine($"두 점 p1(10,20), p2(30,40) 사이의 거리는 {(p1-p)}입니다.");
-            //string s1 = "Good";
-            //string s2 = "morning!";
-            //string s3 = s1 + s2;
+            //WriteLine($"두 점 p1(10,20), p2(30,40) 사이의 거리는 {(p1 - p)}입니다.");
+            string s1 = "Good";
+            string s2 = "morning!";
+            string s3 = s1 + s2;
             Point p = new Point(10, 20);
             Point p1 = new Point(30, 40);
-            WriteLine($"두 점 p1(10,20), p2(30,40)의 면적은 {(p1-p)}입니다.");
+            WriteLine($"두 점 p1(10,20), p2(30,40)의 거리는 [{p1-p}], 면적은 [{p1*p}]입니다.");
         }
         public void MainFunc()
         {
-            Func1(); return;
+            //Func1(); return; //Point Test
             int i = 10, j=20;
             double d = 1.5, e = 3.1;
             Object o = i + 1; //Object는 변수의 종류 무관.
@@ -90,6 +98,10 @@ namespace Test01_Hello
             WriteLine($"i:{sizeof(int)}, d:{sizeof(double)}");
 
 
+            //int[] arr = new int[100]; //배열 선언
+            int[] arr = new int[i]; //c와 비교했을 때, 배열 선언을 변수로 할 수 있는 차이가 있음.
+           for(int ii=0;ii<10;ii++) arr[ii] = i;
+            arr[1].
 
             //myLib my = new myLib();
             while (true)
