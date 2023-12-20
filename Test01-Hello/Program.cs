@@ -69,7 +69,18 @@ namespace Test01_Hello
     }
     class Test01 //main class
     {
-        public void Func1()
+        delegate void cbTest();
+        void f1() { WriteLine("delegate Test 01"); }
+        void f2() { WriteLine("delegate Test 02"); }
+        void f3() { WriteLine("delegate Test 03"); }
+        void Func_DelegateTest()
+        {
+            cbTest cb;
+            cb = new cbTest(f1); cb();
+            cb = new cbTest(f2); cb();
+            cb = new cbTest(f3); cb();
+        }
+        public void Func1_PointTest()
         {
             //Point p = new Point(10, 20);
             //Point p1 = new Point(30, 40);
@@ -81,10 +92,9 @@ namespace Test01_Hello
             Point p1 = new Point(30, 40);
             WriteLine($"두 점 p1(10,20), p2(30,40)의 거리는 [{p1-p}], 면적은 [{p1*p}]입니다.");
         }
-        public void MainFunc()
+        public void Func_ReadWrite()
         {
-            //Func1(); return; //Point Test
-            int i = 10, j=20;
+            int i = 10, j = 20;
             double d = 1.5, e = 3.1;
             Object o = i + 1; //Object는 변수의 종류 무관.
             var v = i * 10; //var라는 데이터 타입은 없음. v는 int로 간주.
@@ -93,15 +103,15 @@ namespace Test01_Hello
             o = d + 0.5;
             //v = d * 10; //v는 int이므로 d를 넣으면 오류. 
             v = j * 10;
-            WriteLine("Hello World({0},{4})\nMain Function({2},{3},{1})", i, j, d, e, o); 
+            WriteLine("Hello World({0},{4})\nMain Function({2},{3},{1})", i, j, d, e, o);
             WriteLine("i:{0}, j:{1}, d:{2}, e:{3}, o:{4}", i, j, d, e, o);
             WriteLine($"i:{sizeof(int)}, d:{sizeof(double)}");
 
 
             //int[] arr = new int[100]; //배열 선언
             int[] arr = new int[i]; //c와 비교했을 때, 배열 선언을 변수로 할 수 있는 차이가 있음.
-           for(int ii=0;ii<10;ii++) arr[ii] = i;
-            arr[1].
+            for (int ii = 0; ii < 10; ii++) arr[ii] = i;
+            //arr[1].
 
             //myLib my = new myLib();
             while (true)
@@ -131,6 +141,93 @@ namespace Test01_Hello
                     WriteLine(e1.Message);
                 }
             }
+        }
+        int ArrSum1(int[] arr) //int 배열요소의 합
+        {
+            int sum = arr[0];
+            for (int i = 0; i < arr.Length; i++)
+                sum += arr[i];
+            return sum;
+        }
+        T ArrSum<T>(T[] arr) //<int>int 배열요소의 합을 구하는 제네릭 함수
+        {
+            T sum = (dynamic) 0;
+            foreach (T a in arr)
+                sum = (dynamic) arr;
+            return sum;
+        }
+        void PrinArr<T>(T[] arr)
+        {
+            int i = 0;
+            foreach (T a in arr)
+            {
+                Write($"[i++]{a}  ");
+            }
+        }
+        void InitArr(out int[] arr, int n) //out: 포인터처럼 arr를 다루고자할 때 사용
+        {
+            arr = new int[n];
+            foreach (int a in arr) arr[a] = 0;
+        }
+        void CallArr(int[] arr)
+        {
+            arr[2] = 100;
+            arr[4] = 200;
+            for (int i = 0; i < 10; i++)
+                Write($"arr[{i}]:{arr[i]}  ");
+            WriteLine();
+        }
+        public void Func_ArrayTest()
+        {
+            string s1 = "Good ";
+            string s2 = "morning";
+
+            int[] arr; //= new int[10]; //1차원 배열 객체. 객체의 초기화
+            int[] arr1 = { 0, 1, 2, 3, 4 }; //{}를 통해 초기화 가능.
+            Point[] parr = new Point[10];
+            
+            int[,] brr = { { 10, 11, 12, 13, 14 }, { 20, 21, 22, 23, 24 } }; //2차원 객체 선언.
+            int[][] crr =
+            {
+                new int[] { 10, 11, 12, 13, 14 },
+                new int[] { 20, 21, 22, 23, 24, 25, 26 }
+            };
+            InitArr(out arr, 10); for (int i = 0; i < 10; i++) Write($"arr[{i}]:{arr[i]}  ");WriteLine();
+            crr[0].CopyTo(arr, 0); for (int i = 0; i < 10; i++) Write($"arr[{i}]:{arr[i]}  "); WriteLine();
+            CallArr(arr);         for (int i = 0; i < 10; i++) Write($"arr[{i}]:{arr[i]}  ");WriteLine();
+            //arr.CopyTo(brr, 0); //arr은 1차원 배열, brr은 2차원 배열이므로 수행될 수 없음. 수행상의 오류는 컴파일러가 잡아주지 못하며 수행단계(.NET framework)에서 걸러짐.
+            //arr.CopyTo(crr[0], 6); //배열의 길이가 달라 오류.
+            
+
+
+            for (int i = 0; i < 2; i++)
+            { 
+                for (int j = 0; j < 5; j++)
+                {
+                    Write($"brr[{i},{j}]:{brr[i, j]}  ");
+                }
+                WriteLine("");
+            } 
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Write($"crr[{i}][{j}]:{crr[i][j]}  ");
+                }
+                WriteLine("");
+            }
+
+            WriteLine($"Length of [arr] : {arr.Length}");
+            WriteLine($"Sum of [arr] : {ArrSum(arr)}");
+            arr.Append<int>(1);
+            WriteLine(s1 + s2); //== string s3 = s1 + s2;
+            WriteLine($"Length of [arr] : {arr.Length}");
+        }
+        public void MainFunc() //주 진입점(실행함수)
+        {
+            //Func1_PointTest(); return; //Point Test
+            //Func_ReadWrite(); return;
+            Func_ArrayTest(); return;
         }
     }
 }
